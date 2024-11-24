@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Switch</title>
+    <!-- CSS de Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+<!-- JavaScript de Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <style>
+        /* General */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        /* Header */
+        h1 {
+            color: #4CAF50;
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        /* Form */
+        label {
+            font-weight: bold;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #333;
+            color: #e0e0e0;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1em;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        table, th, td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+        tr:nth-child(odd) {
+            background-color: #1e1e1e;
+        }
+        tr:hover {
+            background-color: #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            .container {
+                padding: 15px;
+            }
+        }
+        /* Cambiar el fondo y el texto de Select2 */
+.select2-container .select2-selection--single {
+    background-color: #333; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    border: 1px solid #444; /* Borde gris oscuro */
+}
+
+/* Cambiar el fondo y el texto del dropdown */
+.select2-dropdown {
+    background-color: #333; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+}
+
+/* Resaltar opción seleccionada */
+.select2-results__option--highlighted {
+    background-color: #555; /* Fondo más claro */
+    color: #fff; /* Texto blanco */
+}
+
+/* Cambiar el texto del placeholder */
+.select2-selection__placeholder {
+    color: #aaa; /* Placeholder en gris claro */
+}
+
+/* Quitar bordes feos al interactuar */
+.select2-container--default .select2-selection--single:focus {
+    outline: none;
+    border-color: #555;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Switch</h1>
+        <form id="controlForm">
+            <label for="ip">Selecciona un switch:</label>
+            <select id="ip" name="ip" onchange="mostrarSeleccionado(this)" >
+                <option value="10.254.250.5">Switch 1 - Rincon del Chino Switch 10.254.250.5</option>
+                <option value="10.254.250.10">Switch 2 - Tocumbo 10.254.250.10</option>
+                <option value="10.254.250.2">Switch 3 -  "oficina" DataCenter 10.254.250.2</option>
+                <option value="172.18.251.12">Switch 4 - La Barca 172.18.251.12</option>
+                <option value="172.18.251.11">Switch 5 - Atotonilco 172.18.251.11</option>
+                <option value="172.18.251.10">Switch 6 - Tototlan 172.18.251.10</option>
+                <option value="172.18.251.9">Switch 7 - Ocotlan POP IFIBRA 172.18.251.9</option>
+                <option value="172.18.251.2">Switch 8 - POP Telefonica Ocotlan 172.18.251.2</option>
+                <option value="172.18.251.8">Switch 9 - Poncitlan 172.18.251.8</option>
+                <option value="172.18.251.5">Switch 10 - Chapala 172.18.251.5</option>
+                <option value="172.18.251.4">Switch 11 - El Salto 172.18.251.4-</option>
+                <option value="172.18.251.13">Switch 12 - Jocotepec 172.18.251.13</option>
+                <option value="172.18.251.14">Switch 13 -  Acatlan 172.18.251.14</option>
+                <option value="172.18.251.19">Switch 14 - Zacoalco 172.18.251.19</option>
+                <option value="172.18.251.20">Switch 15 - Sayula 172.18.251.20</option>
+                <option value="172.18.251.15">Switch 16 - Tala 172.18.251.15</option>
+                <option value="172.27.11.72">Switch 17 -  La Quemada 172.27.11.72</option>
+                <option value="172.27.11.70">Switch 18 - Saucillo 172.27.11.70</option>
+                <option value="10.14.0.253">Switch 19 - CTC Ixtlan 10.14.0.253</option>
+                <option value="172.18.251.16">Switch 20 - Astillero 172.18.251.16</option>
+                <option value="172.18.251.3">Switch 21 -  POP Telefonica Guadalajara 172.18.251.3</option>
+                <option value="172.18.251.6">Switch 22 - POP Telefonica Zacatecas 172.18.251.6</option>
+                <option value="184.105.16.115">Switch 23 - POP Telefonica Zacatecas PUBLICA HE 184.105.16.115</option>
+                <option value="172.18.251.7">Switch 24 - MDC Mcallen 172.18.251.7</option>
+                <option value="184.105.16.116">Switch 25 - MDC Mcallen PUBLICA HE 184.105.16.116</option>
+                <option value="172.17.17.2">Switch 26 - POP Telefonica Colima Switch_Huawei 172.17.17.2</option>
+                <option value="10.8.253.251">Switch 27 - Los Asmoles 10.8.253.251</option>
+                <option value="10.8.253.252">Switch 28 - Madrid 10.8.253.252</option>
+                <option value="10.8.253.253">Switch 29 - CRC Tecoman 10.8.253.253</option>
+                <option value="10.11.0.252">Switch 30 - CTC Acaponeta 10.11.0.252</option>
+                <option value="10.24.0.251">Switch 31 - CTC Rosa Morada 10.24.0.251</option>
+                <option value="10.24.0.252">Switch 32 - CTC Penas 10.24.0.252</option>
+                <option value="172.28.8.4">Switch 33 -  ALTAN Poza Rica 172.28.8.4</option>
+                <option value="172.28.8.2">Switch 34 - HUB Poza Rica 172.28.8.2</option>
+                <option value="187.248.81.13">Switch 35 - HUB Poza Rica PUBLICA Flo: 187.248.81.13</option>
+                <option value="201.162.187.86">Switch 36 - HUB Poza Rica PUBLICA Telefonica: 201.162.187.86</option>
+                <option value="172.28.8.6">Switch 37 - Tihuatlan Netwey 172.28.8.6</option>
+                <option value="172.28.8.5">Switch 38 - Tuxpan 172.28.8.5</option>
+                <option value="172.27.7.100">Switch 39 - CRC Alamo 172.27.7.100</option>
+                <option value="172.27.7.102">Switch 40 - Pedrera 172.27.7.102</option>
+                <option value="172.27.7.101">Switch 41 - Llano en medio 172.27.7.101</option>
+                <option value="172.27.7.16">Switch 42 -  Atlapexco 172.27.7.16</option>
+                <option value="172.27.7.18">Switch 43 - Hub_Huejutla 172.27.7.18</option>
+                <option value="172.27.7.5">Switch 44 - Tantoyuca 172.27.7.5</option>
+                <option value="172.27.7.11">Switch 45 - San Sebastian _HUB 172.27.7.11</option>
+                <option value="172.27.7.4">Switch 46 - Tepetzintla 172.27.7.4</option>
+                <option  value="172.27.7.20">Switch 47 - Cerro Azul Netwey 172.27.7.20</option>
+            </select>
+            <br><br>
+            <br><br>
+            
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required value="nocvelocom">
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required value="**N0cV3l0c0m!**">
+
+            <label for="tipoComando">Tipo de Comando:</label>
+            <select id="tipoComando" name="tipoComando">
+                <option value="interfaces">Mostrar Descripción de Interfaces</option>
+                
+            </select>
+
+            <button type="submit">Enviar Comando</button>
+        </form>
+
+        <h2>Respuesta</h2>
+        <div id="respuesta"></div>
+    </div>
+
+    <script>
+        document.getElementById('controlForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const ip = document.getElementById('ip').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const tipoComando = document.getElementById('tipoComando').value;
+    
+            try {
+                const response = await fetch('http://localhost:3000/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ip, username, password, tipoComando })
+                });
+                const data = await response.json();
+                displayData(data.respuesta, tipoComando);
+            } catch (error) {
+                document.getElementById('respuesta').textContent = 'Error: ' + error.message;
+            }
+        });
+    
+        function displayData(response, tipoComando) {
+            const lines = response.split('\n');
+            let output = '';
+    
+            if (tipoComando === "interfaces") {
+                output += `<table>
+                    <thead>
+                        <tr>
+                            <th>Interface</th>
+                            <th>PHY</th>
+                            <th>Protocol</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+    
+                lines.forEach(line => {
+                    if (line.includes("Recibiendo datos de")) return;
+    
+                    const match = line.trim().match(/^(\S+)\s+(\S+)\s+(\S+)\s+(.*)$/);
+                    if (match) {
+                        const [_, interfaceName, phy, protocol, description] = match;
+                        output += `<tr>
+                            <td>${interfaceName}</td>
+                            <td>${phy}</td>
+                            <td>${protocol}</td>
+                            <td>${description}</td>
+                             <td><button class="btn-diagnosis" onclick="obtenerDiagnostico('${interfaceName}')">Ver Diagnóstico</button></td>
+                            <td>
+    <button class="btn-power" onclick="controlarInterface('${interfaceName}', '${phy.includes('*') ? 'on' : 'off'}')">
+        ${phy.includes('*') ? 'off' : 'on'}
+    </button>
+</td>
+
+                             </tr>`;
+                    }
+                });
+    
+                output += `</tbody></table>`;
+            } else if (tipoComando === "diagnosis") {
+                let inTable = false;
+                lines.forEach(line => {
+                    if (line.includes("transceiver diagnostic information")) {
+                        if (inTable) output += '</tbody></table></div>';
+                        output += `<div class="section"><h3>${line}</h3><table><thead><tr><th>Parameter</th><th>Current Value</th><th>Low Alarm Threshold</th><th>High Alarm Threshold</th><th>Status</th></tr></thead><tbody>`;
+                        inTable = true;
+                    } else if (line.trim()) {
+                        const [parameter, currentValue, lowAlarm, highAlarm, status] = line.trim().split(/\s+/);
+                        output += `<tr>
+                            <td>${parameter}</td>
+                            <td>${currentValue || ''}</td>
+                            <td>${lowAlarm || ''}</td>
+                            <td>${highAlarm || ''}</td>
+                            <td>${status || ''}</td>
+                        </tr>`;
+                    }
+                });
+    
+                
+            }
+            else if (tipoComando === "display interface:") {
+                let inTable = false;
+                lines.forEach(line => {
+                    if (line.includes("transceiver brief")) {
+                        if (inTable) output += '</tbody></table></div>';
+            output += `<div class="section"><h3>${line}</h3><table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>`;
+            inTable = true;
+        } else if (line.trim()) {
+            const match = line.match(/(Current RX Power \(dBm\)\s*:\s*([\d.-]+))|(Current TX Power \(dBm\)\s*:\s*([\d.-]+))/);
+            if (match) {
+                const parameter = match[1] ? "RXPower (dBm)" : "TXPower (dBm)";
+                const value = match[2] || match[4];
+                output += `<tr>
+                    <td>${parameter}</td>
+                    <td>${value}</td>
+                </tr>`;
+            }
+                    }
+                });
+    
+                if (inTable) output += '</tbody></table></div>';
+            }
+            
+    
+            document.getElementById('respuesta').innerHTML = output;
+        }
+        
+        async function controlarInterface(interfaceName, action) {
+    const ip = document.getElementById('ip').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Aquí decidimos el comando según el estado de la interfaz
+    const tipoComando = 'toggle'; // Puedes ajustar esto si necesitas otro tipo de comando
+    const comando = action === 'on' ? 'shutdown' : 'undo shutdown'; // Dependiendo de si 'on' o 'off', enviamos el comando adecuado
+
+    try {
+        const response = await fetch('http://localhost:3000/control', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ip,
+                username,
+                password,
+                tipoComando:'toggle' ,         // Aquí pasamos el comando con valor 'shutdown' o 'no shutdown'
+                interfaceName,
+                estadoInterfaz: action // El estado de la interfaz (on/off)
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.statusText}`);
+
+        }
+
+        const data = await response.json();
+        alert(data.mensaje);
+    } catch (error) {
+        alert('Error: wey' + error.message);
+    }
+}
+
+
+
+async function cargarSwitches() {
+    try {
+        const response = await fetch('http://localhost:3000/switches');
+        const switches = await response.json();
+
+        const select = document.getElementById('ip'); // Accede al <select> con id="ip"
+        switches.forEach(switchObj => {
+            const option = document.createElement('option');
+            option.value = switchObj.ip;
+            option.textContent = switchObj.name;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error al cargar la lista de switches:', error);
+    }
+}
+$(document).ready(function() {
+    $('#ip').select2({
+        placeholder: 'Escribe para buscar un switch',
+        allowClear: true // Permite limpiar la selección
+    });
+});
+
+function mostrarSeleccionado(selectElement) {
+    selectElement.style.color = "#fff"; // Asegurar visibilidad del texto
+}
+
+// Llamar a la función cuando cargue la página
+document.addEventListener('DOMContentLoaded', cargarSwitches);
+        async function obtenerDiagnostico(interfaceName) {
+            const ip = document.getElementById('ip').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ip,
+                        username,
+                        password,
+                        tipoComando: 'diagnosis',
+                        interfaceName
+                    })
+                });
+                const data = await response.json();
+                displayData(data.respuesta, 'diagnosis');
+            } catch (error) {
+                document.getElementById('respuesta').textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
