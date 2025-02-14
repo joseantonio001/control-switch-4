@@ -23,7 +23,10 @@ app.post('/control', (req, res) => {
         if (interfaceName.startsWith("XGE")) {
             let formattedInterfaceName = interfaceName.replace(/^XGE/, "XGigabitEthernet");
             comando = `display transceiver diagnosis interface ${formattedInterfaceName}`;
-        } else if (interfaceName.startsWith("10GE")) {
+        }else if(interfaceName.startsWith("40GE")){
+            comando = `display transceiver diagnosis interface ${interfaceName}`;
+        } 
+        else if (interfaceName.startsWith("10GE")) {
             comando = `display interface ${interfaceName} transceiver brief`;
         } else if (interfaceName.startsWith("100GE")) {
             comando = `display interface ${interfaceName} transceiver brief`;
